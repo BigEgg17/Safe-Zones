@@ -36,7 +36,7 @@ execVM "scripts\safe_zones.sqf";
 Take the scripts folder and merge it into your mission file.
 #### Installation Completed!
 
-# Optional
+## Optional
 ##### If you wish to set the owner of a vehicle as soon as it is purchased:
 In \z\addons\dayz_server\compile\server_publishVehicle2.sqf, find the following:
 ```
