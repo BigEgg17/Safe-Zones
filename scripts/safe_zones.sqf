@@ -52,7 +52,6 @@ if (!isDedicated) then {
 	private ["_enter", "_exit"];
 
 	safezone_enabled = false;
-	safezone_count = 0;
 
 	_enter = {
 		private "_msg";
