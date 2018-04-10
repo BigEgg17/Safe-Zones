@@ -1,4 +1,26 @@
-# Installation
+# Safe Zones
+Compatible with DayZ Epoch 1.0.6.1 +
+
+## Information
+* Uses built in safe zone array (DZE_SafeZonePosArray)
+* Allows configuration of a timer when leaving the safe zone
+	* Timer can be disabled
+	* All protection will remain in place during this time
+	* Timer only occurs if the player is in the safe zone for more than 60 seconds
+* Allows server owners to prevent theft in safe zones
+	*  Driver of the vehicle automatically becomes the owner when they enter
+	*  Only group members of the owner and the owner themselves can access the vehicle or its gear
+	*  Those who are not in the group of the owner are automatically removed from the vehicle and forbidden from opening its gear
+* Allows configuration of a speed limit
+* Allows creation of safe zone markers
+* Allows server owners to define "bad weapons" that will be removed from players hands
+* Basic functionalities:
+	* God mode
+	* Vehicle god mode
+	* Gear protection
+	* Prevents firing in safe zone
+
+## Installation
 #### Step 1:
 In your init.sqf (mission file), find the following:
 ```
