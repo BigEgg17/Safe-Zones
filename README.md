@@ -9,6 +9,8 @@ Right above it, add the following:
 execVM "scripts\safe_zones.sqf";
 ```
 #### Step 2:
+[>> Download Files <<](https://github.com/BigEgg17/Safe-Zones/archive/master.zip "Download Files")
+
 Take the scripts folder and merge it into your mission file.
 #### Installation Completed!
 
