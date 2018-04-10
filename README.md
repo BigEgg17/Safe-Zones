@@ -1,5 +1,5 @@
 # Safe Zones
-Compatible with DayZ Epoch 1.0.6.1 +
+Compatible with DayZ Epoch 1.0.6.2 +
 
 ## Information
 * Uses built in safe zone array (DZE_SafeZonePosArray)
