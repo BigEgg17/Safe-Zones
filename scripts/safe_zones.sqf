@@ -6,12 +6,11 @@
 	https://github.com/BigEgg17
 */
 
-private ["_bubbles", "_limitSpeed", "_speedLimit", "_preventTheft", "_timer", "_disableWeps", "_badWeps"];
+private ["_bubbles", "_speedLimit", "_preventTheft", "_timer", "_disableWeps", "_badWeps"];
 
 /**************************************************** Config ****************************************************/
 _bubbles = true; // Creates a circle of bubbles marking the circumference of the safe zone.
-_limitSpeed = true; // Limits the speed of vehicles in the safe zone.
-_speedLimit = 30; // Speed limit in safe zones. Only used if _limitSpeed = true.
+_speedLimit = 30; // Speed limit in safe zones. Set to 0 to disable speed limit.
 _preventTheft = true; // Prevent vehicles from being stolen by assigning them an owner (this includes gear).
 _timer = 10; // Delay ending safe zone protection for this many seconds upon leaving. Set to 0 to disable timer.
 
@@ -132,32 +131,32 @@ if (!isDedicated) then {
 			cutText ["You cannot fire your weapon in a safe zone!", "WHITE IN"];
 		};
 
-		[_limitSpeed, _speedLimit, _disableWeps, _badWeps, _preventTheft] spawn {
+		[_speedLimit, _disableWeps, _badWeps, _preventTheft] spawn {
 			while {safezone_enabled} do
 			{
 				private "_vehicle";
 
 				_vehicle = vehicle player;
 
-				if (_this select 2) then {
+				if (_this select 1) then {
 					private "_currentWeapon";
 
 					_currentWeapon = currentWeapon player;
 
-					if (_currentWeapon in (_this select 3)) then {
+					if (_currentWeapon in (_this select 2)) then {
 						player action ["dropWeapon", player, _currentWeapon]; // Drops the weapon and the ammo for it
 					};
 				};
 
 				if (_vehicle != player) then {
 					// Speed Limit
-					if (_this select 0) then {
+					if ((_this select 0) > 0) then {
 						if !(_vehicle isKindOf "Air") then {
 							private "_speed";
 
 							_speed = abs(speed _vehicle);
 
-							if (_speed > (_this select 1)) then {
+							if (_speed > (_this select 0)) then {
 								private ["_velocity", "_mod"];
 
 								_velocity = velocity _vehicle;
@@ -168,7 +167,7 @@ if (!isDedicated) then {
 						};
 					};
 					// Remove player from vehicle if they lack ownership or aren't in owner's group
-					if (_this select 4) then {
+					if (_this select 3) then {
 						private ["_owner", "_deny"];
 
 						_owner = _vehicle getVariable ["Owner", "0"];
