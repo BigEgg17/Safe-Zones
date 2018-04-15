@@ -62,7 +62,7 @@ if (!isDedicated) then {
 
 		if (!DZE_BackpackAntiTheft) then {DZE_BackpackAntiTheft = true;};
 
-		_msg = "You entered a safe zone!";
+		_msg = localize "STR_CL_SZ_ENTER";
 		taskHint [_msg, [0,1,0,1], "taskDone"];
 		_msg call dayz_rollingMessages;
 
@@ -103,7 +103,7 @@ if (!isDedicated) then {
 						
 						if (_deny) then {
 							_display closeDisplay 2;
-							"You cannot open the gear of another player's vehicle!" call dayz_rollingMessages;
+							localize "STR_CL_SZ_GEAR" call dayz_rollingMessages;
 						};
 					};
 				};
@@ -128,7 +128,7 @@ if (!isDedicated) then {
 		};
 		player_fired = { // Block firing in safe zone
 			deleteVehicle (_this select 6);
-			cutText ["You cannot fire your weapon in a safe zone!", "WHITE IN"];
+			cutText [localize "STR_CL_SZ_FIRE", "WHITE IN"];
 		};
 
 		[_speedLimit, _disableWeps, _badWeps, _preventTheft] spawn {
@@ -174,7 +174,7 @@ if (!isDedicated) then {
 
 						if (driver _vehicle == player && {_owner == "0"}) then { // Set an owner if one doesn't exist
 							_vehicle setVariable ["Owner", getPlayerUID player, true];
-							"You have been set as this vehicle's owner." call dayz_rollingMessages;
+							localize "STR_CL_SZ_OWNER" call dayz_rollingMessages;
 							_owner = _vehicle getVariable ["Owner", "0"];
 						};
 
@@ -214,7 +214,7 @@ if (!isDedicated) then {
 		isInTraderCity = false;
 		canbuild = true;
 
-		_msg = "You left the safe zone!";
+		_msg = localize "STR_CL_SZ_EXIT";
 		taskHint [_msg, [1,0,0,1], "taskFailed"];
 		_msg call dayz_rollingMessages;
 
@@ -232,16 +232,16 @@ if (!isDedicated) then {
 				};
 				for "_x" from _timer to 1 step -1 do
 				{
-					[format["Protection ending in %1 second(s)!", _x], 1] call dayz_rollingMessages;
+					[format[localize "STR_CL_SZ_ENDING", _x], 1] call dayz_rollingMessages;
 					uiSleep 1;
 					if ({_vehicle distance (_x select 0) <= (_x select 1)} count DZE_SafeZonePosArray > 0) exitWith {};
 				};
 			} else {
-				format["You were only in the safe zone for %1 second(s)!", round _time] call dayz_rollingMessages;
+				format[localize "STR_CL_SZ_TIME", round _time] call dayz_rollingMessages;
 			};
 		};
 
-		"Protection disabled!" call dayz_rollingMessages;
+		localize "STR_CL_SZ_DISABLED" call dayz_rollingMessages;
 
 		fnc_usec_damageHandler = fnc_usec_damageHandler1;
 		player_zombieCheck = player_zombieCheck1;

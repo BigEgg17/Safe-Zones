@@ -21,6 +21,9 @@ Compatible with DayZ Epoch 1.0.6.2 +
 	* Prevents firing in safe zone
 
 ## Installation
+
+#### **Note:** This script is dependent upon community localizations, which can be found [here](https://github.com/oiad/communityLocalizations).
+
 #### Step 1:
 In your init.sqf (mission file), find the following:
 ```
