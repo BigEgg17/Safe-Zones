@@ -21,6 +21,13 @@ _badWeps = [ // Will remove these weapons from the player if they try to select 
 ];
 /****************************************************************************************************************/
 
+// Needed on both client and server for vehicle protection
+fnc_veh_handleDam2 = fnc_veh_handleDam;
+fnc_veh_handleDam = {
+	if ({(_this select 0) distance (_x select 0) <= (_x select 1)} count DZE_SafeZonePosArray > 0 || {(_this select 0) getVariable ["sz_immunity", false]}) exitWith {0};
+	_this call fnc_veh_handleDam2;
+};
+
 if (isServer && {_bubbles}) then {
 	private "_count";
 
@@ -274,11 +281,4 @@ if (!isDedicated) then {
 
 		uiSleep 1;
 	};
-};
-
-// Needed on both client and server for vehicle protection
-fnc_veh_handleDam2 = fnc_veh_handleDam;
-fnc_veh_handleDam = {
-	if ({(_this select 0) distance (_x select 0) <= (_x select 1)} count DZE_SafeZonePosArray > 0 || {(_this select 0) getVariable ["sz_immunity", false]}) exitWith {0};
-	_this call fnc_veh_handleDam2;
 };
