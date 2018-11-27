@@ -84,7 +84,19 @@ if (!isDedicated) then {
 
 			if (_vehicle != player) then { // Reset owner when entering
 				if (driver _vehicle == player) then {
-					_vehicle setVariable ["Owner", "0", true];
+					private "_owner";
+
+					_owner = [];
+					_owner set [count _owner, getPlayerUID player];
+
+					{
+						if !(getPlayerUID _x in _owner) then {
+							_owner set [count _owner, getPlayerUID _x];
+						};
+					} count (crew _vehicle);
+
+					_vehicle setVariable ["Owner", _owner, true];
+					localize "STR_CL_SZ_OWNER" call dayz_rollingMessages;
 				};
 			};
 			
@@ -100,13 +112,15 @@ if (!isDedicated) then {
 					if ((player distance _cursorTarget <= _dis) && {_cursorTarget isKindOf "Air" || {_cursorTarget isKindOf "LandVehicle"} || {_cursorTarget isKindOf "Ship"}}) then {
 						private ["_owner", "_deny"];
 						
-						_owner = _cursorTarget getVariable ["Owner", "0"];
+						_owner = _cursorTarget getVariable ["Owner", []];
 						
 						// Allow group members of the owner to access gear
 						_deny = true;
 						{
-							if (getPlayerUID _x == _owner) exitWith {_deny = false;};
+							if (getPlayerUID _x == (_owner select 0)) exitWith {_deny = false;};
 						} count (units group player);
+
+						if (getPlayerUID player in _owner) then {_deny = false};
 						
 						if (_deny) then {
 							_display closeDisplay 2;
@@ -177,21 +191,25 @@ if (!isDedicated) then {
 					if (_this select 3) then {
 						private ["_owner", "_deny"];
 
-						_owner = _vehicle getVariable ["Owner", "0"];
+						_owner = _vehicle getVariable ["Owner", []];
 
-						if (driver _vehicle == player && {_owner == "0"}) then { // Set an owner if one doesn't exist
-							_vehicle setVariable ["Owner", getPlayerUID player, true];
+						if (driver _vehicle == player && {count _owner == 0}) then { // Set an owner if one doesn't exist
+							_owner set [count _owner, getPlayerUID player];
+							_vehicle setVariable ["Owner", _owner, true];
 							localize "STR_CL_SZ_OWNER" call dayz_rollingMessages;
-							_owner = _vehicle getVariable ["Owner", "0"];
 						};
+						
+						if (count _owner > 0) then {
+							_deny = true;
+							{
+								if (getPlayerUID _x == (_owner select 0)) exitWith {_deny = false;};
+							} count (units group player);
 
-						_deny = true;
-						{
-							if (getPlayerUID _x == _owner) exitWith {_deny = false;};
-						} count (units group player);
+							if (getPlayerUID player in _owner) then {_deny = false;};
 
-						if (_deny) then {
-							player action ["Eject", _vehicle];
+							if (_deny) then {
+								player action ["Eject", _vehicle];
+							};
 						};
 					};
 					// Prevent player from firing vehicle guns in safe zone
