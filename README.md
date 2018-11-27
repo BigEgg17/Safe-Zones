@@ -47,5 +47,5 @@ _object call fnc_veh_ResetEH;
 ```
 Below it, add the following:
 ```
-_object setVariable ["Owner", _playerUID, true];
+_object setVariable ["Owner", [_playerUID], true];
 ```
